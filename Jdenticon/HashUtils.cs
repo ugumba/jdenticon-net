@@ -29,7 +29,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -73,7 +72,13 @@ namespace Jdenticon
 
         private static HashAlgorithm CreateHashAlgorithm(string name)
         {
-            var obj = CryptoConfig.CreateFromName(name);
+      object obj;
+      if (name == "SHA1")
+        obj = SHA1.Create();
+      else if (name == "MD5")
+        obj = MD5.Create();
+      else
+                throw new ArgumentOutOfRangeException(nameof(name));
             if (obj == null)
             {
                 return null;
